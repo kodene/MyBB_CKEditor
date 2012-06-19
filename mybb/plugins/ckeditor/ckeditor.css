@@ -1,0 +1,47 @@
+body {
+	background: #efefef;
+	color: #000;
+	font-family: Verdana, Arial, Sans-Serif;
+	font-size: 13px;
+	line-height: 1.4em;
+}
+
+p {
+	margin: 0px;
+}
+
+blockquote {
+	border: 1px solid #ccc;
+	margin: 1em 1em;
+	background: #fff;
+	padding: 4px;
+}
+
+blockquote cite {
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	font-style: normal;
+	display: block;
+	margin: 4px 0;
+}
+
+.codeblock {
+	background: #fff;
+	border: 1px solid #ccc;
+	margin: 1em 1em;
+	padding: 4px;
+}
+
+.codeblock .title {
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+	margin: 4px 0;
+}
+
+.codeblock code {
+	overflow: auto;
+	height: auto;
+	font-family: Monaco, Consolas, Courier, monospace;
+	font-size: 13px;
+}
+

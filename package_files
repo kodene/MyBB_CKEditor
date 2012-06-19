@@ -1,0 +1,8 @@
+inc\
+jscripts\editor_themes\ckeditor\images
+jscripts\editor_themes\ckeditor\lang
+jscripts\editor_themes\ckeditor\plugins
+jscripts\editor_themes\ckeditor\skins
+jscripts\editor_themes\ckeditor\themes
+jscripts\editor_themes\ckeditor\ckeditor.js
+jscripts\editor_themes\ckeditor\mybb_config.js
