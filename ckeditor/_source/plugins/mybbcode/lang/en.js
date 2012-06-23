@@ -1,3 +1,7 @@
+/*
+Copyright (c) 2012, Brian McCloskey. All rights reserved.
+For licensing, see LICENSE.
+*/
 CKEDITOR.plugins.setLang( 'mybbcode', 'en',
 {
 	mybbcode :

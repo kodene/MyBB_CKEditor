@@ -1,3 +1,7 @@
+/*
+Copyright (c) 2012, Brian McCloskey. All rights reserved.
+For licensing, see LICENSE.
+*/
 (function()
 {
 	function getState( editor, path )
