@@ -1,4 +1,7 @@
 /*
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+
 Copyright (c) 2012, Brian McCloskey. All rights reserved.
 For licensing, see LICENSE.
 
@@ -109,54 +112,8 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 			if ( !range )
 				return;
 			
-			//var bookmarks = selection.createBookmarks(),
-			//	ranges = selection.getRanges( true )[0],
-			//	cssClassName = this.cssClassName,
-			//	iterator = ranges.createIterator(),
-			//	block;
-
-			var bookmarks = selection.createBookmarks();
-			
-			// Kludge for #1592: if the bookmark nodes are in the beginning of
-			// blockquote, then move them to the nearest block element in the
-			// blockquote.
-			if ( CKEDITOR.env.ie )
-			{
-				var bookmarkStart = bookmarks[0].startNode,
-					bookmarkEnd = bookmarks[0].endNode,
-					cursor;
-            
-				if ( bookmarkStart && bookmarkStart.getParent().getName() == 'code' )
-				{
-					cursor = bookmarkStart;
-					while ( ( cursor = cursor.getNext() ) )
-					{
-						if ( cursor.type == CKEDITOR.NODE_ELEMENT &&
-								cursor.isBlockBoundary() )
-						{
-							bookmarkStart.move( cursor, true );
-							break;
-						}
-					}
-				}
-            
-				if ( bookmarkEnd
-						&& bookmarkEnd.getParent().getName() == 'code' )
-				{
-					cursor = bookmarkEnd;
-					while ( ( cursor = cursor.getPrevious() ) )
-					{
-						if ( cursor.type == CKEDITOR.NODE_ELEMENT &&
-								cursor.isBlockBoundary() )
-						{
-							bookmarkEnd.move( cursor );
-							break;
-						}
-					}
-				}
-			}
-			
-			var iterator = range.createIterator(),
+			var bookmarks = selection.createBookmarks(),
+				iterator = range.createIterator(),
 				block;
 			iterator.enlargeBr = editor.config.enterMode != CKEDITOR.ENTER_BR;
 			
@@ -214,7 +171,6 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 					code = editor.document.createElement( 'code' );
 
 				codeWrap.addClass( this.cssClassName );
-				codeTitle.setAttribute( 'contenteditable', 'false' );
 				codeTitle.addClass( 'title' );
 
 				if ( this.name == 'codetag' )
@@ -283,7 +239,6 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 					{
 						var codeTitle = editor.document.createElement( 'div' );
 						
-						codeTitle.setAttribute( 'contenteditable', 'false' );
 						codeTitle.addClass( 'title' );
 						if ( this.name == 'codetag' )
 							codeTitle.setText( 'CODE:' );
@@ -347,11 +302,6 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 			selection.selectBookmarks( bookmarks );
 			editor.focus();
-			
-			//if ( ranges.startContainer.$.parentElement.tagName &&
-			//	 ranges.startContainer.$.parentElement.tagName == 'CODE' )
-			//	return;
-            //
 		},
 			
 		refresh : function( path )
