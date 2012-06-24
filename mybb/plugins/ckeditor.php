@@ -1,4 +1,6 @@
 <?php
+//Copyright (c) 2012, Brian McCloskey. All rights reserved.
+//For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
 
 // Disallow direct access to this file for security reasons
 if (!defined("IN_MYBB"))
@@ -262,7 +264,6 @@ function ckeditor_uninstall()
 
 	while($tid = $db->fetch_field($query, "tid"))
 	{
-		//die($tid);
 		$css_file = MYBB_ROOT."cache/themes/theme{$tid}/ckeditor.css";
 		if(file_exists($css_file))
 			unlink($css_file);
@@ -391,8 +392,9 @@ function ckeditor_load()
 	
 	eval("\$ckeditor_instance = \"".$templates->get('ckeditor_instance')."\";");
 	eval("\$ckeditor_load = \"".$templates->get('ckeditor_load')."\";");
-	
-	$replace = "ckeditor.css', smiley_descriptions : [ $smiley_description ], smiley_images : [ $smiley_path ], smiley_names : [ $smiley_name ]}";
+
+	$url = parse_url( $mybb->settings['bburl'], PHP_URL_PATH) . '/';
+	$replace = "ckeditor.css', smiley_descriptions : [ $smiley_description ], smiley_images : [ $smiley_path ], smiley_names : [ $smiley_name ], smiley_path : '".$url."'}";
 	$ckeditor_instance = preg_replace("/ckeditor.css'}/", $replace, $ckeditor_instance);
 
 	// If editing the sig, need to change the CKEditor instance
