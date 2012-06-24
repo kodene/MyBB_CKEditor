@@ -2,7 +2,10 @@
 Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 
-Modified by Brian McCloskey to support MyBB
+Copyright (c) 2012, Brian McCloskey. All rights reserved.
+For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
+
+This code was modififed from the CKEditor plugin bbcode.
 */
 
 (function()
