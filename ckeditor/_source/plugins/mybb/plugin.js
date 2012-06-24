@@ -2,7 +2,7 @@
 Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 
-Modified by Brian McCloskey to support MyBB.
+Modified by Brian McCloskey to support MyBB
 */
 
 (function()
@@ -47,14 +47,6 @@ Modified by Brian McCloskey to support MyBB.
 			tab.remove( 'cmbAlign' );
 			tab.remove( 'txtAlt' );
 			tab.remove( 'htmlPreview' );
-			
-			//definition.onOk = function( ev )
-			//{
-			//	//var src = ev.sender.originalElement.$.src,
-			//	//	width = ev.sender.originalElement.$.width,
-			//	//	height = ev.sender.originalElement.$.height;
-			//	//definition.onok();
-			//}
 		}
 		else if ( name == 'specialchar' )
 		{
@@ -795,13 +787,13 @@ Modified by Brian McCloskey to support MyBB.
 								
 								cite.add( new CKEDITOR.htmlParser.text( citeInfo[ 0 ].replace( /^'|'$/g, '' ) + ' Wrote' ) );
 								citeHide.attributes.style = 'display: none;';
+								citeHide.add( new CKEDITOR.htmlParser.text( citeInfo[ 0 ] ) );
 								citeHide.add( new CKEDITOR.htmlParser.text( citeInfo[ 1 ] ) );
 								citeHide.add( new CKEDITOR.htmlParser.text( citeInfo[ 2 ] ) );
 								cite.add( citeHide );
 							}
 							
 							delete element.attributes.cite;
-							cite.attributes.contenteditable = 'false';
 							element.children.unshift( cite );
 						}
 					},
@@ -836,7 +828,6 @@ Modified by Brian McCloskey to support MyBB.
 									var titleText = new CKEDITOR.htmlParser.text( 'PHP CODE:' );
 								
 								codeTitle.attributes['class'] = 'title';
-								codeTitle.attributes.contenteditable = 'false';
 								codeTitle.children = [ titleText ];
 								codeWrap.children = [ code ];
 								code.children = element.children;
@@ -973,10 +964,8 @@ Modified by Brian McCloskey to support MyBB.
 								{
 									if ( cite.children.length == 2 )
 									{
-										var pid = cite.children[ 1 ].children[ 0 ].value.match( /(^'[^']*')/ )[ 0 ];
-										var dateline = cite.children[ 1 ].children[ 0 ].value.match( /('[^']*'$)/ )[ 0 ];
-										value = "'" + citeText.replace( / Wrote$/, '' ) + "' pid=" +
-											pid + " dateline=" + dateline;
+										var author = cite.children[1].children[0].value.split(/('[^']*')/);
+										value = author[1] + " pid=" + author[3] + " dateline=" + author[5];
 									}
 									else
 									{
@@ -1009,7 +998,8 @@ Modified by Brian McCloskey to support MyBB.
 											&& singleton.type == CKEDITOR.NODE_TEXT
 											&& singleton.value == value )
 										value = '';
-
+									else
+										value = value.replace( /&amp;/g, '&' );
 									tagName = 'url';
 								}
 							}
