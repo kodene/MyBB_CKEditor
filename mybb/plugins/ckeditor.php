@@ -11,6 +11,7 @@ if (!defined("IN_MYBB"))
 // Define hooks
 $plugins->add_hook('usercp_options_end', 'ckeditor_quick_reply_option');
 $plugins->add_hook('usercp_do_options_end', 'ckeditor_quick_reply_do_option');
+$plugins->add_hook('showthread_start', 'ckeditor_add_onclick');
 $plugins->add_hook('showthread_end', 'ckeditor_load');
 $plugins->add_hook('newreply_end', 'ckeditor_load');
 $plugins->add_hook('newthread_end', 'ckeditor_load');
@@ -361,6 +362,15 @@ function ckeditor_quick_reply_do_option()
 	}
 }
 
+function ckeditor_add_onclick()
+{
+	global $ckeditor_onclick;
+	
+	if(THIS_SCRIPT == "showthread.php" && ($mybb->settings['ckeditor_quickreply'] == 1) &&
+		($mybb->user['ckeditorquickreply'] == 1))
+		$ckeditor_onclick = 'onclick="CKEDITOR.instances[\'message\'].updateElement();CKEDITOR.instances[\'message\'].setData(\'\');"';
+}
+
 // Load ckeditor
 function ckeditor_load()
 {
@@ -566,6 +576,7 @@ function ckeditor_enable_quickreply()
 	require_once(MYBB_ROOT."inc/adminfunctions_templates.php");
 	
 	find_replace_templatesets('showthread', "#".preg_quote('</head>')."#", '{$ckeditor_load}</head>');
+	find_replace_templatesets('showthread_quickreply', "#".preg_quote('id="quick_reply_submit"')."#", 'id="quick_reply_submit" {$ckeditor_onclick}');
 }
 
 // Disable CKEditor for Quick Reply
@@ -574,6 +585,7 @@ function ckeditor_disable_quickreply()
 	require_once(MYBB_ROOT."inc/adminfunctions_templates.php");
 
 	find_replace_templatesets('showthread', "#".preg_quote('{$ckeditor_load}')."#", '');
+	find_replace_templatesets('showthread_quickreply', "#".preg_quote(' {$ckeditor_onclick}')."#", '');
 }
 
 ?>
