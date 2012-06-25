@@ -3,13 +3,13 @@
 :: For licensing, see LICENSE.html or http://ckeditor.com/license
 ::
 
-@ECHO OFF
+@ECHO ON
 
 CLS
 ECHO.
 
 :: rmdir /S /Q release
-rmdir /S /Q ../../..\ckbuild\ 2> NUL
+rmdir /S /Q "../../../ckbuild"
 
 java -jar ckreleaser/ckreleaser.jar ckreleaser.release ../.. ../../../ckbuild "3.6.3 (mybb)" ckeditor_3.6.3_mybb --run-before-release=langtool.bat
 
