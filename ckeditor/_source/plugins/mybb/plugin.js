@@ -67,9 +67,11 @@ This code was modififed from the CKEditor plugin bbcode.
 		stylesMap = { 'color' : 'color', 'size' : 'font-size', 'font' : 'font-family', 'align' : 'text-align' },
 		attributesMap = { 'url' : 'href', 'email' : 'mailhref', 'quote': 'cite', 'list' : 'listType', 'video' : 'videotype' };
 
+	var insideCode = 0;
+	
 	// List of block-like tags.
 	var dtd =  CKEDITOR.dtd,
-		blockLikeTags = CKEDITOR.tools.extend( { table:1 }, dtd.$block, dtd.$listItem, dtd.$tableContent, dtd.$list, { code:1 } );
+		blockLikeTags = CKEDITOR.tools.extend( { table:1 }, dtd.$block, dtd.$listItem, dtd.$tableContent, dtd.$list );
 
 	var semicolonFixRegex = /\s*(?:;\s*|$)/;
 	function serializeStyleText( stylesObject )
@@ -178,6 +180,7 @@ This code was modififed from the CKEditor plugin bbcode.
 
 			while ( ( parts = this._.bbcPartsRegex.exec( bbcode ) ) )
 			{
+				
 				var tagIndex = parts.index;
 				if ( tagIndex > lastIndex )
 				{
@@ -197,8 +200,11 @@ This code was modififed from the CKEditor plugin bbcode.
 				 */
 
 				part = ( parts[ 1 ] || parts[ 3 ] || '' ).toLowerCase();
+				if ( parts[3] == 'code' )
+					insideCode = 0;
+
 				// Unrecognized tags should be delivered as a simple text (#7860).
-				if ( part && !bbcodeMap[ part ] )
+				if ( part && !bbcodeMap[ part ] || insideCode )
 				{
 					this.onText( parts[ 0 ] );
 					continue;
@@ -239,6 +245,9 @@ This code was modififed from the CKEditor plugin bbcode.
 						attribs[ 'bbcode' ] = part;
 
 					this.onTagOpen( tagName, attribs, CKEDITOR.dtd.$empty[ tagName ] );
+					if ( parts[0] == '[code]' )
+						insideCode = 1;
+
 				}
 				// Closing tag
 				else if ( parts[ 3 ] )
@@ -364,7 +373,7 @@ This code was modififed from the CKEditor plugin bbcode.
 			{
 				var reApply = false,
 					addPoint;   // New position to start adding nodes.
-
+				
 				// If the element name is the same as the current element name,
 				// then just close the current one and append the new one to the
 				// parent. This situation usually happens with <p>, <li>, <dt> and
