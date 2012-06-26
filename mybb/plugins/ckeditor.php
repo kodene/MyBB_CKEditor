@@ -364,8 +364,8 @@ function ckeditor_quick_reply_do_option()
 
 function ckeditor_add_onclick()
 {
-	global $ckeditor_onclick;
-	
+	global $mybb, $ckeditor_onclick;
+
 	if(THIS_SCRIPT == "showthread.php" && ($mybb->settings['ckeditor_quickreply'] == 1) &&
 		($mybb->user['ckeditorquickreply'] == 1))
 		$ckeditor_onclick = 'onclick="CKEDITOR.instances[\'message\'].updateElement();CKEDITOR.instances[\'message\'].setData(\'\');"';
