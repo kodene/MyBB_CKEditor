@@ -5,7 +5,7 @@ For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
 CKEDITOR.editorConfig = function( config )
 {
 	config.extraPlugins = 'mybb,autogrow,mybbcode,mybbvideo';
-	config.removePlugins = 'bidi,dialogadvtab,div,elementspath,filebrowser,find,format,forms,iframe,liststyle,newpage,pagebreak,pastefromword,preview,print,scayt,showborders,stylescombo,table,tabletools,wsc';
+	config.removePlugins = 'a11yhelp,about,bidi,colordialog,colorbutton,dialogadvtab,div,elementspath,filebrowser,find,flash,format,forms,iframe,liststyle,newpage,pagebreak,pastefromword,pastetext,preview,print,scayt,showblocks,showborders,stylescombo,table,tabletools,wsc,wordcount';
 	config.fontSize_sizes = 'XX Small/xx-small;X Small/x-small;Small/small;Medium/medium;Large/large;X Large/x-large;XX Large/xx-large';
 	config.font_names = 'Arial;Courier;Impact;Tahoma;Times New Roman;Trebuchet MS;Verdana';
 	config.skin = 'mybb';
@@ -19,19 +19,19 @@ CKEDITOR.editorConfig = function( config )
 	[
 		[ CKEDITOR.ALT + 121 /*F10*/, 'toolbarFocus' ],
 		[ CKEDITOR.ALT + 122 /*F11*/, 'elementsPathFocus' ],
-	
+
 		[ CKEDITOR.SHIFT + 121 /*F10*/, 'contextMenu' ],
-	
+
 		[ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
 		[ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
 		[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 /*Z*/, 'redo' ],
-	
+
 		[ CKEDITOR.CTRL + 76 /*L*/, 'link' ],
-	
+
 		[ CKEDITOR.CTRL + 66 /*B*/, 'bold' ],
 		[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ],
 		[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ],
-	
+
 		[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ],
 
 		[ CKEDITOR.CTRL + CKEDITOR.ALT + 73 /*I*/, 'indent' ],
@@ -49,3 +49,28 @@ CKEDITOR.editorConfig = function( config )
 		['Smiley','SpecialChar'],
 	];
 };
+
+if ( typeof Thread === 'object' )
+{
+	var mq = Thread.loadMultiQuoted;
+	
+	Thread.loadMultiQuoted = function()
+	{
+		if(use_xmlhttprequest == 1)
+		{
+			this.spinner = new ActivityIndicator("body", {image: imagepath + "/spinner_big.gif"});
+			new Ajax.Request('xmlhttp.php?action=get_multiquoted&load_all=1', {method: 'get', onComplete: function(request) {quotedCleanup(request); }});
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	quotedCleanup = function(request)
+	{
+		Thread.multiQuotedLoaded(request);
+		CKEDITOR.instances.message.setData($('message').value);
+	};
+}
