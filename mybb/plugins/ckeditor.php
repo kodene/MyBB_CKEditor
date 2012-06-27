@@ -47,7 +47,7 @@ function ckeditor_install()
 {
 	global $db, $lang;
 
-	require_once(MYBB_ROOT."admin/inc/functions_themes.php");
+	require_once(MYBB_ADMIN_DIR."inc/functions_themes.php");
 	
 	$lang->load("ckeditor");
 	
@@ -252,7 +252,7 @@ function ckeditor_uninstall()
 {
 	global $db;
 	
-	require_once(MYBB_ROOT."admin/inc/functions_themes.php");
+	require_once(MYBB_ADMIN_DIR."inc/functions_themes.php");
 	
 	$db->query('ALTER TABLE '.TABLE_PREFIX.'users DROP ckeditorquickreply');
 	$db->query('DELETE FROM '.TABLE_PREFIX.'templates WHERE title=\'ckeditor_load\'');
