@@ -4,8 +4,6 @@ For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
 */
 (function()
 {
-
-			
 	var spoilerCommand =
 	{
 		exec : function( editor )
@@ -81,62 +79,6 @@ For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
 				spoiler.append( block );
 			}
 
-			//var frag = range.extractContents( true );
-			//var t = range.endContainer;
-			//fragment.insertBefore( t );
-			
-			//editor.insertHtml( '[spoiler]' + t + '[/spoiler]' );
-			//if ( !range )
-			//	return;
-			//
-			//var bookmarks = selection.createBookmarks();
-			//
-			//var paragraphs = [],
-			//	block,
-			//	spoiler = editor.document.createElement( 'code' ),
-			//	iterator = range.createIterator();
-			//
-			//while ( ( block = iterator.getNextParagraph() ) )
-			//	paragraphs.push( block );
-			////textOnly = textOnly.replace( /\n/g, '<br>' );
-			//alert( textOnly );
-			////spoiler.append( frag );
-			//spoiler.$.innerHtml = textOnly;
-			//spoiler.addClass( 'spoiler' );
-			////spoiler.setText( textOnly );
-			//spoiler.insertBefore( paragraphs[0] );
-			//
-			//if ( paragraphs.length < 1 )
-			//{
-			//	var para = editor.document.createElement( editor.config.enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ),
-			//		firstBookmark = bookmarks.shift();
-			//	range.insertNode( para );
-			//	para.append( new CKEDITOR.dom.text( '\ufeff', editor.document ) );
-			//	range.moveToBookmark( firstBookmark );
-			//	range.selectNodeContents( para );
-			//	range.collapse( true );
-			//	firstBookmark = range.createBookmark();
-			//	paragraphs.push( para );
-			//	bookmarks.unshift( firstBookmark );
-			//}
-			//spoiler.addClass( 'spoiler' );
-			//spoiler.insertBefore( paragraphs[0] );
-			//while ( paragraphs.length > 0 )
-			//{
-			//	block = paragraphs.shift();
-			//	spoiler.append( block );
-			//}
-			
-			//editor.insertHtml( '[spoiler]' + selection + '[/spoiler]' );
-			//open.insertBefore( selection.getStartElement() );
-			//open.append( selection.getStartElement() );
-			//close.insertAfter( selection.getStartElement() );
-			
-			//var spoiler = editor.document.createElement( 'div' ),
-			//	block;
-			//spoiler.insertAfter( selection.getStartElement() );
-			//block = selection.getStartElement.shift();
-			//spoiler.append( block );
 			selection.selectBookmarks( bookmarks );
 			editor.focus();
 		}
