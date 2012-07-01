@@ -65,7 +65,7 @@ function ckeditor_install()
 	$db->insert_query('templates', $ckeditor_load);
 
 	// Template for defining a ckeditor instance
-	$ckeditor_instance_template = '<script type="text/javascript">CKEDITOR.replace(\'message\', {customConfig : \'mybb_config.js\', ckeditorImageWidth : \'{$ckeditor_image_width}\', contentsCss : \'{$mybb->settings[\'bburl\']}/cache/themes/{$ck_theme_dir}/ckeditor.css\'})</script>';
+	$ckeditor_instance_template = '<script type="text/javascript">var ckeditor_spoiler = {$ckeditor_spoiler};CKEDITOR.replace(\'message\', {customConfig : \'mybb_config.js\', ckeditorImageWidth : \'{$ckeditor_image_width}\', contentsCss : \'{$mybb->settings[\'bburl\']}/cache/themes/{$ck_theme_dir}/ckeditor.css\'})</script>';
 	$ckeditor_instance = array(
 		'tid'			=> NULL,
 		'title'			=> 'ckeditor_instance',
@@ -165,6 +165,19 @@ function ckeditor_install()
 	);
 	$db->insert_query('settings', $ckeditor_setting);
 
+	// Add base URL for smiley images
+	$ckeditor_setting = array(
+		'gid'			=> $ckeditor_gid,
+		'name'			=> 'ckeditor_smiley_url',
+		'title'			=> $lang->ckeditor_smiley_url_title,
+		'description'	=> $lang->ckeditor_smiley_url_description,
+		'optionscode'	=> 'text',
+		'value'			=> parse_url( $mybb->settings['bburl'], PHP_URL_PATH) . '/',
+		'disporder'		=> '6',
+		'isdefault'		=> '1',
+	);
+	$db->insert_query('settings', $ckeditor_setting);
+	
 	// Add max image width
 	$ckeditor_setting = array(
 		'gid'			=> $ckeditor_gid,
@@ -173,7 +186,20 @@ function ckeditor_install()
 		'description'	=> $lang->ckeditor_image_width_description,
 		'optionscode'	=> 'text',
 		'value'			=> '200',
-		'disporder'		=> '6',
+		'disporder'		=> '7',
+		'isdefault'		=> '1',
+	);
+	$db->insert_query('settings', $ckeditor_setting);
+	
+	// Add spoiler support
+	$ckeditor_setting = array(
+		'gid'			=> $ckeditor_gid,
+		'name'			=> 'ckeditor_spoiler',
+		'title'			=> $lang->ckeditor_spoiler_title,
+		'description'	=> $lang->ckeditor_spoiler_description,
+		'optionscode'	=> 'radio\r\n0=Disable\r\n1=[spoiler]\r\n2=[spoiler&#61;xxx]\r\n',
+		'value'			=> '0',
+		'disporder'		=> '8',
 		'isdefault'		=> '1',
 	);
 	$db->insert_query('settings', $ckeditor_setting);
@@ -374,7 +400,9 @@ function ckeditor_add_onclick()
 // Load ckeditor
 function ckeditor_load()
 {
-	global $ckeditor_load, $ckeditor_instance, $templates, $theme, $mybb, $cache, $quickreply;
+	global $ckeditor_load, $ckeditor_instance, $ckeditor_spoiler, $templates, $theme, $mybb, $cache, $quickreply;
+
+	$ckeditor_spoiler = $mybb->settings['ckeditor_spoiler'];
 	
 	// Build smiley information from the cache
 	$smilies = $cache->read('smilies');
@@ -395,16 +423,17 @@ function ckeditor_load()
 	else
 		$ck_theme_dir = "theme1";
 
+	// Set default image width
 	if($mybb->settings['ckeditor_image_width'] > 0)
 		$ckeditor_image_width = preg_replace('/[^0-9]/Uis', '', $mybb->settings['ckeditor_image_width']);
 	else
 		$ckeditor_image_width = 0;
 	
+	// Load templates
 	eval("\$ckeditor_instance = \"".$templates->get('ckeditor_instance')."\";");
 	eval("\$ckeditor_load = \"".$templates->get('ckeditor_load')."\";");
 
-	$url = parse_url( $mybb->settings['bburl'], PHP_URL_PATH) . '/';
-	$replace = "ckeditor.css', smiley_descriptions : [ $smiley_description ], smiley_images : [ $smiley_path ], smiley_names : [ $smiley_name ], smiley_path : '".$url."'}";
+	$replace = "ckeditor.css', smiley_descriptions : [ $smiley_description ], smiley_images : [ $smiley_path ], smiley_names : [ $smiley_name ], smiley_path : '".$mybb->settings['ckeditor_smiley_url']."'}";
 	$ckeditor_instance = preg_replace("/ckeditor.css'}/", $replace, $ckeditor_instance);
 
 	// If editing the sig, need to change the CKEditor instance
