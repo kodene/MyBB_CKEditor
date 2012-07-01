@@ -61,6 +61,8 @@ This code was modififed from the CKEditor plugin bbcode.
 		}
 	});
 
+	var editor = CKEDITOR.instances.message || CKEDITOR.instances.signature;
+	
 	var bbcodeMap = { 'b' : 'strong', 'hr' : 'hr', 's' : 's', 'u': 'u', 'i' : 'em', 'color' : 'span', 'size' : 'span', 'font' : 'span', 'quote' : 'blockquote', 'url' : 'a', 'email' : 'span', 'img' : 'span', '*' : 'li', 'list' : 'ol', 'align' : 'div', 'code' : 'span', 'php' : 'span', 'video' : 'span' },
 		convertMap = { 'strong' : 'b' , 'hr' : 'hr', 'b' : 'b', 's' : 's', 'strike' : 's', 'u': 'u', 'em' : 'i', 'i': 'i', 'li' : '*' },
 		tagnameMap = { 'strong' : 'b', 'hr' : 'hr', 'em' : 'i', 'u' : 'u', 'li' : '*', 'ul' : 'list', 'ol' : 'list', 'a' : 'link', 'img' : 'img', 'blockquote' : 'quote' },
@@ -73,6 +75,15 @@ This code was modififed from the CKEditor plugin bbcode.
 	var dtd =  CKEDITOR.dtd,
 		blockLikeTags = CKEDITOR.tools.extend( { table:1 }, dtd.$block, dtd.$listItem, dtd.$tableContent, dtd.$list );
 
+	if ( editor.config.useSpoiler > 0 )
+	{
+		bbcodeMap['spoiler'] = 'div';
+		if ( editor.config.useSpoiler == 2 )
+		{
+			attributesMap['spoiler'] = 'title';
+		}
+	}
+	
 	var semicolonFixRegex = /\s*(?:;\s*|$)/;
 	function serializeStyleText( stylesObject )
 	{
@@ -117,9 +128,8 @@ This code was modififed from the CKEditor plugin bbcode.
 	}
 
 	// Maintain the map of smiley-to-description.
-	var editor = CKEDITOR.instances.message || CKEDITOR.instances.signature;
 	var smileyMap = {};
-	
+
 	for ( var i = 0 ; i < editor.config.smiley_descriptions.length ; i ++ )
 	{
 		smileyMap[ editor.config.smiley_descriptions[ i ] ] = editor.config.smiley_names[ i ];
@@ -241,7 +251,7 @@ This code was modififed from the CKEditor plugin bbcode.
 
 					// Two special handling - image and email, protect them
 					// as "span" with an attribute marker.
-					if ( part == 'email' || part == 'img' || part == 'code' || part == 'php' || part == 'video' )
+					if ( part == 'email' || part == 'img' || part == 'code' || part == 'php' || part == 'video' || part == 'spoiler' )
 						attribs[ 'bbcode' ] = part;
 
 					this.onTagOpen( tagName, attribs, CKEDITOR.dtd.$empty[ tagName ] );
@@ -595,6 +605,14 @@ This code was modififed from the CKEditor plugin bbcode.
 				breakBeforeClose : false,
 				breakAfterClose : true
 			} );
+		
+			this.setRules( 'spoiler',
+			{
+				breakBeforeOpen : true,
+				breakAfterOpen : false,
+				breakBeforeClose : false,
+				breakAfterClose : true
+			} );
 		},
 
 		proto :
@@ -768,6 +786,24 @@ This code was modififed from the CKEditor plugin bbcode.
 			{
 				elements :
 				{
+					'div' : function( element )
+					{
+						var bbcode;
+						
+						if ( bbcode = element.attributes.bbcode )
+						{
+							if ( bbcode == 'spoiler' )
+							{
+								if ( editor.config.useSpoiler > 0 )
+								{
+									if ( editor.config.useSpoiler == 2 && element.attributes.title )
+										element.attributes.title = 'Spoiler: ' + element.attributes.title;
+									else
+										element.attributes.title = 'Spoiler:';
+								}
+							}
+						}
+					},
 					'blockquote' : function( element )
 					{
 						var quoted = new CKEDITOR.htmlParser.element( 'div' );
@@ -832,7 +868,6 @@ This code was modififed from the CKEditor plugin bbcode.
 							{
 								var code = new CKEDITOR.htmlParser.element( 'code' );
 								var codeTitle = new CKEDITOR.htmlParser.element( 'div' );
-								var codeWrap = new CKEDITOR.htmlParser.element( 'div' );
 								
 								if ( bbcode == 'code' )
 									var titleText = new CKEDITOR.htmlParser.text( 'CODE:' );
@@ -841,7 +876,6 @@ This code was modififed from the CKEditor plugin bbcode.
 								
 								codeTitle.attributes['class'] = 'title';
 								codeTitle.children = [ titleText ];
-								codeWrap.children = [ code ];
 								code.children = element.children;
 								
 								try {
@@ -936,7 +970,11 @@ This code was modififed from the CKEditor plugin bbcode.
 						}
 						else if ( tagName == 'div' )
 						{
-							if ( element.attributes['class'] == 'title' )
+							if ( element.attributes[ 'class' ] == 'cke_spoiler' )
+							{
+								tagName = 'spoiler';
+							}
+							else if ( element.attributes['class'] == 'title' )
 							{
 								element.children = [];
 							}
@@ -963,6 +1001,18 @@ This code was modififed from the CKEditor plugin bbcode.
 								value = 1;
 
 							tagName = 'list';
+						}
+						else if ( tagName == 'spoiler' )
+						{
+							if ( editor.config.useSpoiler == 2 )
+							{
+								var title = element.children[0].children[0].value.replace( /^Spoiler:/, '' );
+								title = title.replace( /&nbsp;/g, '' );
+								title = CKEDITOR.tools.ltrim( title );
+								if ( title )
+									value = title;
+							}
+							element.children[0].children[0].value = '';
 						}
 						else if ( tagName == 'blockquote' )
 						{
@@ -994,6 +1044,7 @@ This code was modififed from the CKEditor plugin bbcode.
 
 							tagName = 'quote';
 						}
+						
 						else if ( tagName == 'a' )
 						{
 							if ( ( value = attributes.href ) )
