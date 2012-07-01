@@ -121,5 +121,14 @@ packages :
 				[
 					'_source/plugins/mybbvideo/lang/en.js'
 				]
-		}
+		},
+
+		{
+			output : 'plugins/spoiler/plugin.js',
+			wrap : true,
+			files :
+				[
+					'_source/plugins/spoiler/plugin.js'
+				]
+		},
 	]
