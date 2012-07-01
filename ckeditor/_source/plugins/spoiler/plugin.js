@@ -173,7 +173,7 @@ For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
 							
 							if ( attributes.bbcode == 'spoiler' )
 							{
-								if ( editor.config.useSpoiler > 0 )
+								if ( ckeditorSpoiler > 0 )
 								{
 									element.attributes[ 'class' ] = 'cke_spoiler';
 									

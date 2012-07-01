@@ -75,10 +75,10 @@ This code was modififed from the CKEditor plugin bbcode.
 	var dtd =  CKEDITOR.dtd,
 		blockLikeTags = CKEDITOR.tools.extend( { table:1 }, dtd.$block, dtd.$listItem, dtd.$tableContent, dtd.$list );
 
-	if ( editor.config.useSpoiler > 0 )
+	if ( ckeditorSpoiler > 0 )
 	{
 		bbcodeMap['spoiler'] = 'div';
-		if ( editor.config.useSpoiler == 2 )
+		if ( ckeditorSpoiler == 2 )
 		{
 			attributesMap['spoiler'] = 'title';
 		}
@@ -794,9 +794,9 @@ This code was modififed from the CKEditor plugin bbcode.
 						{
 							if ( bbcode == 'spoiler' )
 							{
-								if ( editor.config.useSpoiler > 0 )
+								if ( ckeditorSpoiler > 0 )
 								{
-									if ( editor.config.useSpoiler == 2 && element.attributes.title )
+									if ( ckeditorSpoiler == 2 && element.attributes.title )
 										element.attributes.title = 'Spoiler: ' + element.attributes.title;
 									else
 										element.attributes.title = 'Spoiler:';
@@ -1004,7 +1004,7 @@ This code was modififed from the CKEditor plugin bbcode.
 						}
 						else if ( tagName == 'spoiler' )
 						{
-							if ( editor.config.useSpoiler == 2 )
+							if ( ckeditorSpoiler == 2 )
 							{
 								var title = element.children[0].children[0].value.replace( /^Spoiler:/, '' );
 								title = title.replace( /&nbsp;/g, '' );
