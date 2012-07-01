@@ -65,7 +65,7 @@ function ckeditor_install()
 	$db->insert_query('templates', $ckeditor_load);
 
 	// Template for defining a ckeditor instance
-	$ckeditor_instance_template = '<script type="text/javascript">var ckeditor_spoiler = {$ckeditor_spoiler};CKEDITOR.replace(\'message\', {customConfig : \'mybb_config.js\', ckeditorImageWidth : \'{$ckeditor_image_width}\', contentsCss : \'{$mybb->settings[\'bburl\']}/cache/themes/{$ck_theme_dir}/ckeditor.css\'})</script>';
+	$ckeditor_instance_template = '<script type="text/javascript">var ckeditorSpoiler = {$ckeditor_spoiler};CKEDITOR.replace(\'message\', {customConfig : \'mybb_config.js\', ckeditorImageWidth : \'{$ckeditor_image_width}\', contentsCss : \'{$mybb->settings[\'bburl\']}/cache/themes/{$ck_theme_dir}/ckeditor.css\'})</script>';
 	$ckeditor_instance = array(
 		'tid'			=> NULL,
 		'title'			=> 'ckeditor_instance',
