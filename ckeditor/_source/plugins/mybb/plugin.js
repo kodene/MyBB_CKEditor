@@ -42,6 +42,8 @@ This code was modififed from the CKEditor plugin bbcode.
 			if ( ckeditorImageWidth > 0 )
 				field['default'] = ckeditorImageWidth + 'px';
 			field.style = 'display: none';
+			field = tab.get( 'htmlPreview' );
+			field.style = 'display: none';
 			tab.remove( 'txtHeight' );
 			tab.remove( 'ratioLock' );
 			tab.remove( 'txtBorder' );
@@ -49,7 +51,6 @@ This code was modififed from the CKEditor plugin bbcode.
 			tab.remove( 'txtVSpace' );
 			tab.remove( 'cmbAlign' );
 			tab.remove( 'txtAlt' );
-			tab.remove( 'htmlPreview' );
 		}
 		else if ( name == 'specialchar' )
 		{
