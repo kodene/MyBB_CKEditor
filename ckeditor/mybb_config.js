@@ -5,7 +5,7 @@ For licensing, see LICENSE, or <http://www.gnu.org/licenses/>
 CKEDITOR.editorConfig = function( config )
 {
 	config.extraPlugins = 'mybb,autogrow,mybbcode,mybbvideo,spoiler';
-	config.removePlugins = 'a11yhelp,about,bidi,colordialog,colorbutton,dialogadvtab,div,elementspath,filebrowser,find,flash,format,forms,iframe,liststyle,newpage,pagebreak,pastefromword,pastetext,preview,print,scayt,showblocks,showborders,stylescombo,table,tabletools,wsc,wordcount';
+	config.removePlugins = 'a11yhelp,about,bidi,colordialog,colorbutton,contextmenu,dialogadvtab,div,elementspath,filebrowser,find,flash,format,forms,iframe,liststyle,menubutton,newpage,pagebreak,pastefromword,pastetext,preview,print,scayt,showblocks,showborders,stylescombo,table,tabletools,wsc,wordcount';
 	config.fontSize_sizes = 'XX Small/xx-small;X Small/x-small;Small/small;Medium/medium;Large/large;X Large/x-large;XX Large/xx-large';
 	config.font_names = 'Arial;Courier;Impact;Tahoma;Times New Roman;Trebuchet MS;Verdana';
 	config.skin = 'mybb';
