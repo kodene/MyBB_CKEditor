@@ -14,6 +14,7 @@ CKEDITOR.editorConfig = function( config )
 	config.dialog_backgroundCoverColor = 'rgb(0,0,0)';
 	config.dialog_backgroundCoverOpacity = 0.5;
 	config.enterMode = CKEDITOR.ENTER_BR;
+	config.disableNativeSpellChecker = false;
 	
 	config.keystrokes =
 	[
